@@ -1,0 +1,30 @@
+# Build output
+dist/
+.astro/
+
+# Dependencies
+node_modules/
+
+# Environment variables & secrets
+.env
+.env.*
+!.env.example
+
+# Temporary and log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Python cache & build helper scripts
+__pycache__/
+*.pyc
+build_data_*.py
+assemble_dataset.py
+create_dataset.py
+
+# OS metadata
+.DS_Store
+Thumbs.db
+
+.github-workflows-disabled/

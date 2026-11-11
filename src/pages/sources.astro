@@ -1,0 +1,295 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const title = 'তথ্যসূত্র ও সম্পাদকীয় পদ্ধতি | ফলবৃত্ত';
+const description = 'ফলবৃত্ত-এর পুষ্টিতথ্য, বোটানিক্যাল পরিচয় ও স্বাস্থ্য সম্পর্কিত তথ্য সংকলনের নির্ভরযোগ্য পদ্ধতি এবং প্রাতিষ্ঠানিক রেফারেন্স তালিকা।';
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<BaseLayout title={title} description={description} canonicalPath="/sources/">
+  <div class="container article-container">
+    <!-- Breadcrumbs -->
+    <nav class="breadcrumbs" aria-label="ব্রেডক্রাম্ব নেভিগেশন">
+      <ol class="breadcrumb-list">
+        <li><a href={`${baseUrl}/`}>হোম</a></li>
+        <li class="breadcrumb-separator" aria-hidden="true">›</li>
+        <li class="breadcrumb-current" aria-current="page">তথ্যসূত্র ও সম্পাদকীয় পদ্ধতি</li>
+      </ol>
+    </nav>
+
+    <article class="article-body">
+      <header class="article-header">
+        <span class="article-eyebrow">স্বচ্ছতা ও বিজ্ঞানভিত্তিক সংকলন</span>
+        <h1 class="article-title">তথ্যসূত্র ও সম্পাদকীয় পদ্ধতি</h1>
+        <p class="article-lead">
+          'ফলবৃত্ত' তথ্য পরিবেশনে সর্বোচ্চ নির্ভরযোগ্যতা ও বৈজ্ঞানিক নির্ভুলতা বজায় রাখতে প্রতিশ্রুতিবদ্ধ। আমাদের প্রতিটি তথ্যের ভিত্তি প্রতিষ্ঠিত সরকারি কৃষি গবেষণা প্রতিষ্ঠান, আন্তর্জাতিক খাদ্য সংমিশ্রণ ডাটাবেস এবং পিয়ার-রিভিউড মেডিকেল জার্নাল।
+        </p>
+      </header>
+
+      <section class="editorial-section">
+        <h2>১. পুষ্টি পরিসংখ্যান নির্ধারণের পদ্ধতি</h2>
+        <p>
+          ফলের পুষ্টিমান উপস্থাপনে কোনো কাল্পনিক বা অনুমিত সংখ্যা ব্যবহার করা হয়নি। পুষ্টিতথ্য সংকলনে আমরা নিম্নলিখিত প্রমিত নিয়মাবলী অনুসরণ করি:
+        </p>
+        <div class="method-card">
+          <h4>প্রতি ১০০ গ্রাম ভক্ষণযোগ্য অংশ (Per 100g Edible Portion)</h4>
+          <p>
+            খোসা, শক্ত আঁটি বা অখাদ্য অংশ বাদ দিয়ে কেবল খাওয়ার উপযোগী অংশের পুষ্টিমান হিসাব করা হয়েছে। খাদ্যরূপ সুস্পষ্টভাবে উল্লেখ রয়েছে (যেমন তাজা কাঁচা, পাকা কিংবা শুকনো ফল)।
+          </p>
+        </div>
+        <div class="method-card">
+          <h4>অনুপলব্ধ মান পরিহার</h4>
+          <p>
+            কোনো দুর্লভ ফলের নির্দিষ্ট কোনো খনিজ বা ভিটামিনের মান যদি বৈজ্ঞানিক গবেষণাগারে নির্ণীত না হয়ে থাকে, তবে সেখানে আন্দাজে কোনো সংখ্যা না বসিয়ে '—' প্রতীক দিয়ে নির্দেশ করা হয়েছে।
+          </p>
+        </div>
+      </section>
+
+      <section class="editorial-section">
+        <h2>২. প্রাতিষ্ঠানিক ও বৈজ্ঞানিক তথ্যউৎস</h2>
+        <div class="source-institution-list">
+          <!-- Source 1 -->
+          <div class="institution-card">
+            <div class="inst-header">
+              <span class="inst-badge">আন্তর্জাতিক ডাটাবেস</span>
+              <h3>USDA FoodData Central</h3>
+            </div>
+            <p>
+              যুক্তরাষ্ট্রের কৃষি বিভাগের (USDA) বিশ্বনন্দিত খাদ্য পুষ্টিমান ডাটাবেস, যা বিশ্বজুড়ে পুষ্টিবিদ ও গবেষকদের প্রধান মানদণ্ড হিসেবে বিবেচিত। অধিকাংশ বৈশ্বিক ও সাইট্রাস ফলের পুষ্টিমান এখান থেকে সংগ্রহ ও ক্রস-ম্যাচ করা হয়েছে।
+            </p>
+            <a href="https://fdc.nal.usda.gov" target="_blank" rel="noopener noreferrer" class="source-external-link">
+              ভিজিট করুন: fdc.nal.usda.gov ↗
+            </a>
+          </div>
+
+          <!-- Source 2 -->
+          <div class="institution-card">
+            <div class="inst-header">
+              <span class="inst-badge">বাংলাদেশ জাতীয় কৃষি</span>
+              <h3>বাংলাদেশ কৃষি গবেষণা ইনস্টিটিউট (BARI)</h3>
+            </div>
+            <p>
+              বাংলাদেশে উদ্যানতাত্ত্বিক ফসল, স্থানীয় ও বিদেশি ফলের জাত উন্নয়ন (যেমন বারি মাল্টা-১, বারি পেয়ারা), আবাদ এলাকা এবং স্থানীয় মৌসুমের নির্ভরযোগ্য তথ্য BARI-এর ফসল নির্দেশিকা থেকে সংগৃহীত।
+            </p>
+            <a href="http://www.bari.gov.bd" target="_blank" rel="noopener noreferrer" class="source-external-link">
+              ভিজিট করুন: bari.gov.bd ↗
+            </a>
+          </div>
+
+          <!-- Source 3 -->
+          <div class="institution-card">
+            <div class="inst-header">
+              <span class="inst-badge">জাতিসংঘের খাদ্য সংস্থা</span>
+              <h3>FAO INFOODS</h3>
+            </div>
+            <p>
+              জাতিসংঘের খাদ্য ও কৃষি সংস্থার (FAO) অধীনস্থ International Network of Food Data Systems (INFOODS)। দক্ষিণ এশীয় দেশীয় অপ্রচলিত ফলের (যেমন কদবেল, চালতা, জাম, লটকন) পুষ্টিতথ্য সমন্বয়ে এটি ব্যবহৃত।
+            </p>
+            <a href="https://www.fao.org/infoods" target="_blank" rel="noopener noreferrer" class="source-external-link">
+              ভিজিট করুন: fao.org/infoods ↗
+            </a>
+          </div>
+
+          <!-- Source 4 -->
+          <div class="institution-card">
+            <div class="inst-header">
+              <span class="inst-badge">চিকিৎসা ও টক্সিকোলজি</span>
+              <h3>PubMed / National Center for Biotechnology Information (NCBI)</h3>
+            </div>
+            <p>
+              ক্লিনিক্যাল সতর্কতা, যেমন কামরাঙার নিউরোটক্সিসিটি (Caramboxin), সাইট্রাস ফলের সাইটোক্রোম P450 এনজাইম মিথস্ক্রিয়া, এবং হাইপোগ্লাইসিন বিষক্রিয়া সংক্রান্ত সতর্কতা যাচাইয়ে পিয়ার-রিভিউড মেডিকেল পেপার রেফারেন্স হিসেবে ব্যবহৃত।
+            </p>
+            <a href="https://pubmed.ncbi.nlm.nih.gov" target="_blank" rel="noopener noreferrer" class="source-external-link">
+              ভিজিট করুন: pubmed.ncbi.nlm.nih.gov ↗
+            </a>
+          </div>
+
+          <!-- Source 5 -->
+          <div class="institution-card">
+            <div class="inst-header">
+              <span class="inst-badge">কৃষি ও সম্প্রসারণ তথ্য</span>
+              <h3>কৃষি তথ্য সার্ভিস (AIS) ও কৃষি সম্প্রসারণ অধিদপ্তর (DAE)</h3>
+            </div>
+            <p>
+              বাংলাদেশের ৬৪ জেলার মাঠপর্যায়ের ফলের প্রাপ্যতা, কৃষিতথ্য ও ফসলি ক্যালেন্ডারের তথ্যাবলি সংকলন করা হয়েছে গণপ্রজাতন্ত্রী বাংলাদেশ সরকারের কৃষি মন্ত্রণালয়ের অধীনস্থ এই দপ্তরসমূহ থেকে।
+            </p>
+            <a href="http://www.ais.gov.bd" target="_blank" rel="noopener noreferrer" class="source-external-link">
+              ভিজিট করুন: ais.gov.bd ↗
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section class="editorial-section">
+        <h2>৩. মিথ্যা বা ভিত্তিহীন তথ্য প্রতিরোধে নীতি</h2>
+        <p>
+          ফলবৃত্ত কঠোরভাবে 'অলৌকিক নিরাময়' (Miracle Cure) দাবি পরিহার করে। কোনো ফল ক্যানসার নির্মূল করে দেয়, রক্তের ডায়াবেটিস চিরতরে দূর করে কিংবা শরীর থেকে রাতারাতি টক্সিন বের করে—এমন কোনো অবৈজ্ঞানিক দাবি ফলবৃত্তে স্থান পায় না। ফল স্বাস্থ্যকর সুষম খাদ্যের অপরিহার্য অংশ; কিন্তু তা কখনোই আধুনিক চিকিৎসা বা ওষুধের বিকল্প নয়।
+        </p>
+      </section>
+    </article>
+  </div>
+</BaseLayout>
+
+<style>
+  .article-container {
+    padding-top: 2rem;
+    padding-bottom: 5rem;
+    max-width: 860px;
+  }
+
+  .breadcrumbs {
+    margin-bottom: 2rem;
+  }
+
+  .breadcrumb-list {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+  }
+
+  .breadcrumb-list a {
+    color: var(--color-primary-green);
+    font-weight: 600;
+  }
+
+  .breadcrumb-separator {
+    color: #9EAF9B;
+  }
+
+  .breadcrumb-current {
+    font-weight: 700;
+    color: var(--color-primary-text);
+  }
+
+  .article-header {
+    margin-bottom: 2.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .article-eyebrow {
+    display: inline-block;
+    padding: 0.25rem 0.65rem;
+    background-color: var(--color-soft-green);
+    color: var(--color-primary-green);
+    border-radius: var(--radius-full);
+    font-size: 0.8125rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+  }
+
+  .article-title {
+    font-size: 2.25rem;
+    font-weight: 800;
+    color: var(--color-primary-green);
+    line-height: 1.25;
+    margin-bottom: 1rem;
+  }
+
+  .article-lead {
+    font-size: 1.15rem;
+    line-height: 1.7;
+    color: var(--color-primary-text);
+    font-weight: 500;
+  }
+
+  .editorial-section {
+    margin-bottom: 3rem;
+  }
+
+  .editorial-section h2 {
+    font-size: 1.5rem;
+    color: var(--color-primary-green);
+    margin-bottom: 1rem;
+  }
+
+  .editorial-section p {
+    font-size: 1.0625rem;
+    line-height: 1.75;
+    margin-bottom: 1rem;
+  }
+
+  .method-card {
+    background-color: #FFFFFF;
+    border: 1px solid var(--color-border);
+    border-left: 4px solid var(--color-primary-green);
+    border-radius: var(--radius-md);
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .method-card h4 {
+    font-size: 1.0625rem;
+    color: var(--color-primary-green);
+    margin-bottom: 0.35rem;
+  }
+
+  .method-card p {
+    font-size: 0.9375rem;
+    color: var(--color-primary-text);
+    line-height: 1.6;
+    margin-bottom: 0;
+  }
+
+  .source-institution-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    margin-top: 1.5rem;
+  }
+
+  .institution-card {
+    background-color: #FFFFFF;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .inst-header {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.35rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .inst-badge {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--color-primary-green);
+    background-color: var(--color-soft-green);
+    padding: 0.15rem 0.5rem;
+    border-radius: var(--radius-sm);
+  }
+
+  .institution-card h3 {
+    font-size: 1.25rem;
+    color: var(--color-primary-green);
+  }
+
+  .institution-card p {
+    font-size: 0.96875rem;
+    line-height: 1.65;
+    color: var(--color-primary-text);
+    margin-bottom: 0.75rem;
+  }
+
+  .source-external-link {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--color-primary-green);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .source-external-link:hover {
+    text-decoration: underline;
+  }
+</style>
+

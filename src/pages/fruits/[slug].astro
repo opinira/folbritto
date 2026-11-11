@@ -1,0 +1,928 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import FruitCard from '../../components/FruitCard.astro';
+import { fruits, getRelatedFruits } from '../../data/fruits';
+import type { Fruit } from '../../types/fruit';
+
+export function getStaticPaths() {
+  return fruits.map((fruit) => ({
+    params: { slug: fruit.slug },
+    props: { fruit },
+  }));
+}
+
+interface Props {
+  fruit: Fruit;
+}
+
+const { fruit } = Astro.props;
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
+const relatedFruits = getRelatedFruits(fruit, 4);
+
+const pageTitle = `${fruit.nameBn} (${fruit.nameEn}) - পুষ্টিগুণ, মৌসুম, খাওয়ার নিয়ম ও সতর্কতা`;
+const pageDescription = `${fruit.nameBn}-এর বৈজ্ঞানিক পরিচয় (${fruit.scientificName}), পুষ্টিতথ্য, সম্ভাব্য উপকারিতা, মৌসুম ও প্রয়োজনীয় সতর্কতা জেনে নিন।`;
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  'itemListElement': [
+    {
+      '@type': 'ListItem',
+      'position': 1,
+      'name': 'হোম',
+      'item': `https://opinira.github.io${baseUrl}/`
+    },
+    {
+      '@type': 'ListItem',
+      'position': 2,
+      'name': 'সকল ফল',
+      'item': `https://opinira.github.io${baseUrl}/#directory`
+    },
+    {
+      '@type': 'ListItem',
+      'position': 3,
+      'name': fruit.nameBn,
+      'item': `https://opinira.github.io${baseUrl}/fruits/${fruit.slug}/`
+    }
+  ]
+};
+
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  'headline': `${fruit.nameBn} (${fruit.nameEn}) - ফলবৃত্ত তথ্যভান্ডার`,
+  'description': fruit.introduction,
+  'image': `https://opinira.github.io${baseUrl}${fruit.image}`,
+  'dateModified': '2026-11-10T00:00:00+06:00',
+  'datePublished': '2026-11-10T00:00:00+06:00',
+  'inLanguage': 'bn',
+  'publisher': {
+    '@type': 'Organization',
+    'name': 'ফলবৃত্ত',
+    'logo': `https://opinira.github.io${baseUrl}/images/logo.svg`
+  }
+};
+---
+
+<BaseLayout
+  title={pageTitle}
+  description={pageDescription}
+  image={fruit.image}
+  canonicalPath={`/fruits/${fruit.slug}/`}
+  structuredData={[breadcrumbSchema, articleSchema]}
+>
+  <div class="container fruit-detail-container">
+    <!-- Breadcrumbs -->
+    <nav class="breadcrumbs" aria-label="ব্রেডক্রাম্ব নেভিগেশন">
+      <ol class="breadcrumb-list">
+        <li><a href={`${baseUrl}/`}>হোম</a></li>
+        <li class="breadcrumb-separator" aria-hidden="true">›</li>
+        <li><a href={`${baseUrl}/#directory`}>সকল ফল</a></li>
+        <li class="breadcrumb-separator" aria-hidden="true">›</li>
+        <li class="breadcrumb-current" aria-current="page">{fruit.nameBn}</li>
+      </ol>
+    </nav>
+
+    <!-- Top Hero Card: 2 Columns on Desktop, Stacked on Mobile -->
+    <div class="fruit-hero-card">
+      <div class="fruit-image-column">
+        <div class="fruit-detail-img-wrap">
+          <img
+            src={fruit.image}
+            alt={fruit.imageAltBn || `${fruit.nameBn} ফল`}
+            width="500"
+            height="500"
+            loading="eager"
+            decoding="async"
+            class="fruit-detail-img"
+          />
+        </div>
+        <p class="image-disclaimer-note">
+          {fruit.hasCustomPhoto
+            ? "চিত্রটি শনাক্তকরণ ও নমুনা উপস্থাপনার উদ্দেশ্যে ব্যবহৃত।"
+            : "এই ফলের জন্য চিত্র শিগগিরই যুক্ত হবে। প্রদর্শিত চিত্রটি প্রতীকী।"}
+        </p>
+      </div>
+
+      <div class="fruit-header-column">
+        <div class="fruit-name-header">
+          <div class="fruit-titles">
+            <h1 class="fruit-headline-bn">{fruit.nameBn}</h1>
+            <span class="fruit-headline-en">{fruit.nameEn}</span>
+          </div>
+          <div class="scientific-name-badge">
+            <span class="scientific-label">বৈজ্ঞানিক নাম:</span>
+            <em class="scientific-text">{fruit.scientificName}</em>
+          </div>
+        </div>
+
+        {fruit.aliases && fruit.aliases.length > 0 && (
+          <div class="aliases-wrap">
+            <span class="aliases-label">পরিচিত নাম / জাত:</span>
+            <span class="aliases-text">{fruit.aliases.join(', ')}</span>
+          </div>
+        )}
+
+        <div class="fruit-meta-badges">
+          {fruit.seasonTags.map((s) => (
+            <span class="badge badge-season">
+              <span class="badge-dot" aria-hidden="true">●</span> {s}
+            </span>
+          ))}
+          {fruit.availabilityTags.map((a) => (
+            <span class={`badge ${a === 'আমদানিকৃত' ? 'badge-imported' : 'badge-availability'}`}>
+              {a}
+            </span>
+          ))}
+          {fruit.fruitGroupTags.map((g) => (
+            <span class="badge badge-group">{g}</span>
+          ))}
+        </div>
+
+        <p class="fruit-detail-intro">{fruit.introduction}</p>
+
+        <!-- Anchor Jump Links Bar -->
+        <nav class="anchor-jump-nav" aria-label="পৃষ্ঠার ভেতরের সূচিপত্র">
+          <span class="jump-title">দ্রুত দেখুন:</span>
+          <div class="jump-links-wrap">
+            <a href="#overview" class="jump-link">পরিচিতি</a>
+            <a href="#seasonality" class="jump-link">মৌসুম</a>
+            <a href="#nutrition" class="jump-link">পুষ্টিগুণ</a>
+            <a href="#benefits" class="jump-link">উপকারিতা</a>
+            <a href="#eating" class="jump-link">খাওয়ার নিয়ম</a>
+            <a href="#cautions" class="jump-link">সতর্কতা</a>
+            <a href="#faqs" class="jump-link">প্রশ্নোত্তর</a>
+          </div>
+        </nav>
+
+        <div class="verification-meta">
+          <span>তথ্য যাচাইয়ের তারিখ: <strong>{fruit.verifiedAt}</strong></span>
+          <span class="meta-dot">•</span>
+          <span>উৎস: <strong>{fruit.nutrition.source}</strong></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content Layout -->
+    <div class="fruit-content-layout">
+      <div class="fruit-main-content">
+        <!-- 1. পরিচিতি -->
+        <section id="overview" class="content-section">
+          <h2 class="section-heading">
+            <span class="heading-icon" aria-hidden="true">🌱</span>
+            পরিচিতি ও বোটানিক্যাল বিবরণ
+          </h2>
+          <div class="section-card">
+            <p>{fruit.botanicalDescription}</p>
+          </div>
+        </section>
+
+        <!-- 2. বাংলাদেশে প্রাপ্যতা ও মৌসুম -->
+        <section id="seasonality" class="content-section">
+          <h2 class="section-heading">
+            <span class="heading-icon" aria-hidden="true">🗓️</span>
+            বাংলাদেশে প্রাপ্যতা ও মৌসুম
+          </h2>
+          <div class="section-card">
+            <p>{fruit.availabilityAndSeasonality}</p>
+          </div>
+        </section>
+
+        <!-- 3. পুষ্টিগুণ -->
+        <section id="nutrition" class="content-section">
+          <h2 class="section-heading">
+            <span class="heading-icon" aria-hidden="true">📊</span>
+            পুষ্টিগুণ ও খাদ্যমান
+          </h2>
+          <div class="section-card">
+            <div class="nutrition-header">
+              <span class="nutrition-portion-badge">{fruit.nutrition.portion}</span>
+              <span class="nutrition-source-tag">উৎস: {fruit.nutrition.source}</span>
+            </div>
+
+            <div class="nutrition-grid">
+              <div class="nutrition-tile primary-tile">
+                <span class="nutri-label">ক্যালোরি (শক্তি)</span>
+                <span class="nutri-val">{fruit.nutrition.caloriesKcal} <small>Kcal</small></span>
+              </div>
+              <div class="nutrition-tile">
+                <span class="nutri-label">কার্বোহাইড্রেট</span>
+                <span class="nutri-val">{fruit.nutrition.carbohydratesG} <small>g</small></span>
+              </div>
+              <div class="nutrition-tile">
+                <span class="nutri-label">খাদ্যআঁশ (ফাইবার)</span>
+                <span class="nutri-val">{fruit.nutrition.fiberG} <small>g</small></span>
+              </div>
+              <div class="nutrition-tile">
+                <span class="nutri-label">প্রাকৃতিক শর্করা</span>
+                <span class="nutri-val">{fruit.nutrition.sugarG ?? '—'} <small>g</small></span>
+              </div>
+              <div class="nutrition-tile">
+                <span class="nutri-label">প্রোটিন</span>
+                <span class="nutri-val">{fruit.nutrition.proteinG} <small>g</small></span>
+              </div>
+              <div class="nutrition-tile">
+                <span class="nutri-label">চর্বি (ফ্যাট)</span>
+                <span class="nutri-val">{fruit.nutrition.fatG} <small>g</small></span>
+              </div>
+              <div class="nutrition-tile">
+                <span class="nutri-label">ভিটামিন সি</span>
+                <span class="nutri-val">{fruit.nutrition.vitaminCMg ?? '—'} <small>mg</small></span>
+              </div>
+              <div class="nutrition-tile">
+                <span class="nutri-label">পটাসিয়াম</span>
+                <span class="nutri-val">{fruit.nutrition.potassiumMg ?? '—'} <small>mg</small></span>
+              </div>
+              <div class="nutrition-tile">
+                <span class="nutri-label">ক্যালসিয়াম</span>
+                <span class="nutri-val">{fruit.nutrition.calciumMg ?? '—'} <small>mg</small></span>
+              </div>
+              <div class="nutrition-tile">
+                <span class="nutri-label">আয়রন</span>
+                <span class="nutri-val">{fruit.nutrition.ironMg ?? '—'} <small>mg</small></span>
+              </div>
+            </div>
+            <p class="nutri-note">
+              * পুষ্টির পরিমাণ কৃষি জলবায়ু, মাটির ধরন এবং জাতভেদে কিছুটা পরিবর্তিত হতে পারে। প্রাপ্ত নির্ভরযোগ্য বৈজ্ঞানিক ডাটাবেস অনুযায়ী পরিসংখ্যান সংকলিত।
+            </p>
+          </div>
+        </section>
+
+        <!-- 4. সম্ভাব্য উপকারিতা -->
+        <section id="benefits" class="content-section">
+          <h2 class="section-heading">
+            <span class="heading-icon" aria-hidden="true">✨</span>
+            বিজ্ঞানসম্মত সম্ভাব্য স্বাস্থ্য উপকারিতা
+          </h2>
+          <div class="section-card">
+            <ul class="benefits-list">
+              {fruit.benefits.map((b) => (
+                <li class="benefit-item">
+                  <span class="benefit-icon" aria-hidden="true">✔</span>
+                  <span class="benefit-text">{b}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+
+        <!-- 5. কখন ও কীভাবে খাওয়া যায় -->
+        <section id="eating" class="content-section">
+          <h2 class="section-heading">
+            <span class="heading-icon" aria-hidden="true">🥣</span>
+            কখন ও কীভাবে খাওয়া যায়
+          </h2>
+          <div class="section-card">
+            <p>{fruit.eatingGuidance}</p>
+          </div>
+        </section>
+
+        <!-- 6. কখন সতর্ক থাকা বা এড়িয়ে চলা প্রয়োজন -->
+        <section id="cautions" class="content-section">
+          <h2 class="section-heading caution-heading">
+            <span class="heading-icon" aria-hidden="true">⚠️</span>
+            কখন সতর্ক থাকা বা এড়িয়ে চলা প্রয়োজন
+          </h2>
+          <div class="caution-box">
+            <h4>সতর্কতামূলক নির্দেশনা ও মেডিকেল বিবেচনা</h4>
+            <ul class="cautions-list">
+              {fruit.cautions.map((c) => (
+                <li class="caution-item">{c}</li>
+              ))}
+            </ul>
+          </div>
+        </section>
+
+        <!-- 7. অতিরিক্ত খেলে সম্ভাব্য অসুবিধা -->
+        <section class="content-section">
+          <h2 class="section-heading">
+            <span class="heading-icon" aria-hidden="true">⚖️</span>
+            অতিরিক্ত খেলে সম্ভাব্য অসুবিধা
+          </h2>
+          <div class="section-card">
+            <p>{fruit.excessConsumption}</p>
+          </div>
+        </section>
+
+        <!-- 8. কেনা, ধোয়া ও সংরক্ষণ -->
+        <section class="content-section">
+          <h2 class="section-heading">
+            <span class="heading-icon" aria-hidden="true">🛒</span>
+            কেনা, ধোয়া ও সংরক্ষণ পদ্ধতি
+          </h2>
+          <div class="section-card">
+            <p>{fruit.buyingAndStorage}</p>
+          </div>
+        </section>
+
+        <!-- 9. সাধারণ প্রশ্ন (FAQ) -->
+        <section id="faqs" class="content-section">
+          <h2 class="section-heading">
+            <span class="heading-icon" aria-hidden="true">❓</span>
+            সাধারণ প্রশ্নোত্তর (FAQs)
+          </h2>
+          <div class="faqs-list">
+            {fruit.faqs.map((faq) => (
+              <details class="faq-item">
+                <summary class="faq-question">
+                  <span>{faq.question}</span>
+                  <span class="faq-toggle" aria-hidden="true">+</span>
+                </summary>
+                <div class="faq-answer">
+                  <p>{faq.answer}</p>
+                </div>
+              </details>
+            ))}
+          </div>
+        </section>
+
+        <!-- 10. তথ্যসূত্র -->
+        <section id="sources" class="content-section">
+          <h2 class="section-heading">
+            <span class="heading-icon" aria-hidden="true">📚</span>
+            তথ্যসূত্র ও গবেষণা উদ্ধৃতি
+          </h2>
+          <div class="section-card">
+            <ul class="sources-list">
+              {fruit.sources.map((s) => (
+                <li class="source-item">
+                  <a href={s.url} target="_blank" rel="noopener noreferrer" class="source-link">
+                    <span class="source-title">{s.title}</span> ↗
+                  </a>
+                  <span class="source-publisher">— {s.publisher} (যাচাইয়ের তারিখ: {s.accessDate})</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- Related Fruits Section -->
+    {relatedFruits.length > 0 && (
+      <section class="related-fruits-section">
+        <div class="related-header">
+          <h3 class="related-title">সংশ্লিষ্ট আরও ফল</h3>
+          <p class="related-subtitle">একই মৌসুম বা সমগোত্রীয় আরও কিছু স্বাস্থ্যকর ফলের তথ্য দেখুন</p>
+        </div>
+        <div class="related-grid">
+          {relatedFruits.map((rf) => (
+            <FruitCard fruit={rf} />
+          ))}
+        </div>
+      </section>
+    )}
+  </div>
+</BaseLayout>
+
+<style>
+  .fruit-detail-container {
+    padding-top: 1.5rem;
+    padding-bottom: 5rem;
+  }
+
+  /* Breadcrumbs */
+  .breadcrumbs {
+    margin-bottom: 1.5rem;
+  }
+
+  .breadcrumb-list {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+  }
+
+  .breadcrumb-list a {
+    color: var(--color-primary-green);
+    font-weight: 600;
+  }
+
+  .breadcrumb-list a:hover {
+    text-decoration: underline;
+  }
+
+  .breadcrumb-separator {
+    color: #9EAF9B;
+  }
+
+  .breadcrumb-current {
+    font-weight: 700;
+    color: var(--color-primary-text);
+  }
+
+  /* Hero Card */
+  .fruit-hero-card {
+    background-color: #FFFFFF;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    padding: 1.75rem;
+    box-shadow: var(--shadow-sm);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    margin-bottom: 2.5rem;
+  }
+
+  @media (min-width: 820px) {
+    .fruit-hero-card {
+      grid-template-columns: 360px 1fr;
+      padding: 2.25rem;
+      gap: 3rem;
+      align-items: flex-start;
+    }
+  }
+
+  .fruit-image-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* Square 1:1 Image */
+  .fruit-detail-img-wrap {
+    width: 100%;
+    max-width: 400px;
+    aspect-ratio: 1 / 1;
+    background-color: #FFFDF5;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .fruit-detail-img {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: contain;
+    object-position: center;
+    background-color: #FFFDF5;
+    padding: 1rem;
+  }
+
+  .image-disclaimer-note {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    text-align: center;
+    margin-top: 0.65rem;
+    margin-bottom: 0;
+  }
+
+  .fruit-header-column {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .fruit-name-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .fruit-titles {
+    display: flex;
+    align-items: baseline;
+    gap: 0.65rem;
+    flex-wrap: wrap;
+  }
+
+  .fruit-headline-bn {
+    font-size: 2.25rem;
+    font-weight: 800;
+    color: var(--color-primary-green);
+    line-height: 1.15;
+  }
+
+  .fruit-headline-en {
+    font-size: 1.125rem;
+    color: var(--color-text-muted);
+    font-weight: 600;
+  }
+
+  .scientific-name-badge {
+    background-color: var(--color-soft-green);
+    padding: 0.25rem 0.65rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.875rem;
+    color: var(--color-primary-green);
+  }
+
+  .scientific-label {
+    font-weight: 600;
+    margin-right: 0.25rem;
+  }
+
+  .scientific-text {
+    font-style: italic;
+    font-weight: 600;
+  }
+
+  .aliases-wrap {
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+    margin-bottom: 1rem;
+  }
+
+  .aliases-label {
+    font-weight: 700;
+    color: var(--color-primary-text);
+    margin-right: 0.35rem;
+  }
+
+  .fruit-meta-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .fruit-detail-intro {
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    color: var(--color-primary-text);
+    margin-bottom: 1.5rem;
+  }
+
+  /* Anchor Jump Nav */
+  .anchor-jump-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    background-color: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 0.85rem 1rem;
+    margin-bottom: 1.25rem;
+  }
+
+  @media (min-width: 640px) {
+    .anchor-jump-nav {
+      flex-direction: row;
+      align-items: center;
+    }
+  }
+
+  .jump-title {
+    font-size: 0.84375rem;
+    font-weight: 700;
+    color: var(--color-primary-green);
+    white-space: nowrap;
+  }
+
+  .jump-links-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .jump-link {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    padding: 0.2rem 0.6rem;
+    background-color: #FFFFFF;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    color: var(--color-primary-text);
+    transition: all 0.15s ease;
+  }
+
+  .jump-link:hover {
+    background-color: var(--color-soft-green);
+    color: var(--color-primary-green);
+    border-color: #C8DEC3;
+  }
+
+  .verification-meta {
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .meta-dot {
+    color: #B5CCA8;
+  }
+
+  /* Content Sections */
+  .fruit-main-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .content-section {
+    scroll-margin-top: calc(var(--header-height) + 1.5rem);
+  }
+
+  .section-heading {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--color-primary-green);
+    margin-bottom: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+  }
+
+  .caution-heading {
+    color: #C43B08;
+  }
+
+  .heading-icon {
+    font-size: 1.25rem;
+  }
+
+  .section-card {
+    background-color: #FFFFFF;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .section-card p {
+    font-size: 1rem;
+    line-height: 1.7;
+    margin-bottom: 0;
+  }
+
+  /* Nutrition Grid */
+  .nutrition-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .nutrition-portion-badge {
+    font-weight: 700;
+    font-size: 0.9375rem;
+    color: var(--color-primary-green);
+    background-color: var(--color-soft-green);
+    padding: 0.25rem 0.65rem;
+    border-radius: var(--radius-sm);
+  }
+
+  .nutrition-source-tag {
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+  }
+
+  .nutrition-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  @media (min-width: 640px) {
+    .nutrition-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (min-width: 900px) {
+    .nutrition-grid {
+      grid-template-columns: repeat(5, 1fr);
+    }
+  }
+
+  .nutrition-tile {
+    background-color: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 0.85rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .nutrition-tile.primary-tile {
+    background-color: #F8F6EB;
+    border-color: #E6DDC4;
+  }
+
+  .nutri-label {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    margin-bottom: 0.25rem;
+  }
+
+  .nutri-val {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--color-primary-text);
+  }
+
+  .nutri-val small {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--color-text-muted);
+  }
+
+  .nutri-note {
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+    font-style: italic;
+    margin-top: 0.5rem;
+    margin-bottom: 0;
+  }
+
+  /* Benefits List */
+  .benefits-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+
+  .benefit-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  .benefit-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    background-color: var(--color-soft-green);
+    color: var(--color-primary-green);
+    border-radius: 50%;
+    font-size: 0.75rem;
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  /* Cautions */
+  .cautions-list {
+    list-style: disc;
+    padding-left: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  .caution-item {
+    font-size: 0.96875rem;
+    line-height: 1.6;
+  }
+
+  /* FAQs */
+  .faqs-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .faq-item {
+    background-color: #FFFFFF;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+
+  .faq-question {
+    padding: 1.15rem 1.25rem;
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--color-primary-text);
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    list-style: none;
+    transition: background-color 0.15s ease;
+  }
+
+  .faq-question::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq-question:hover {
+    background-color: var(--color-soft-green);
+    color: var(--color-primary-green);
+  }
+
+  .faq-toggle {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-primary-green);
+    transition: transform 0.2s ease;
+  }
+
+  .faq-item[open] .faq-toggle {
+    transform: rotate(45deg);
+  }
+
+  .faq-answer {
+    padding: 1rem 1.25rem;
+    border-top: 1px solid var(--color-border);
+    background-color: var(--color-bg);
+  }
+
+  .faq-answer p {
+    margin-bottom: 0;
+    line-height: 1.65;
+    font-size: 0.9375rem;
+  }
+
+  /* Sources list */
+  .sources-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .source-item {
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+
+  .source-link {
+    color: var(--color-primary-green);
+    font-weight: 600;
+  }
+
+  .source-link:hover {
+    text-decoration: underline;
+  }
+
+  .source-publisher {
+    color: var(--color-text-muted);
+    margin-left: 0.35rem;
+  }
+
+  /* Related Fruits */
+  .related-fruits-section {
+    margin-top: 4rem;
+    padding-top: 3rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .related-header {
+    margin-bottom: 1.75rem;
+  }
+
+  .related-title {
+    font-size: 1.65rem;
+    color: var(--color-primary-green);
+    font-weight: 800;
+    margin-bottom: 0.35rem;
+  }
+
+  .related-subtitle {
+    font-size: 0.9375rem;
+    color: var(--color-text-muted);
+  }
+
+  .related-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  @media (min-width: 480px) {
+    .related-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 768px) {
+    .related-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .related-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+</style>
+

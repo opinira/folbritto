@@ -1,0 +1,258 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const title = 'আমাদের সম্পর্কে | ফলবৃত্ত';
+const description = 'ফলবৃত্ত প্রকল্পের লক্ষ্য, উদ্দেশ্য এবং বাংলাদেশে সহজলভ্য ও দুর্লভ ফলের সঠিক বাংলা তথ্যভান্ডার গড়ে তোলার প্রয়াস সম্পর্কে জানুন।';
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<BaseLayout title={title} description={description} canonicalPath="/about/">
+  <div class="container article-container">
+    <!-- Breadcrumbs -->
+    <nav class="breadcrumbs" aria-label="ব্রেডক্রাম্ব নেভিগেশন">
+      <ol class="breadcrumb-list">
+        <li><a href={`${baseUrl}/`}>হোম</a></li>
+        <li class="breadcrumb-separator" aria-hidden="true">›</li>
+        <li class="breadcrumb-current" aria-current="page">আমাদের সম্পর্কে</li>
+      </ol>
+    </nav>
+
+    <article class="article-body">
+      <header class="article-header">
+        <span class="article-eyebrow">প্রকল্পের পটভূমি ও লক্ষ্য</span>
+        <h1 class="article-title">ফলবৃত্ত: ফল চিনুন, জেনে খান।</h1>
+        <p class="article-lead">
+          'ফলবৃত্ত' (Folbritto) একটি সম্পূর্ণ অলাভজনক ও তথ্যসূত্রভিত্তিক বাংলা ডিজিটাল আর্কাইভ, যার মূল লক্ষ্য বাংলাদেশে উৎপাদিত, আমদানিকৃত এবং স্থানীয় কম পরিচিত ফলগুলোর বিজ্ঞানসম্মত ও সত্যনিষ্ঠ তথ্য সবার কাছে সহজ বাংলায় পৌঁছে দেওয়া।
+        </p>
+      </header>
+
+      <section class="editorial-section">
+        <h2>প্রকল্পের অনুপ্রেরণা ও প্রয়োজনীয়তা</h2>
+        <p>
+          অনলাইনে ফলমূলের স্বাস্থ্য উপকারিতা নিয়ে প্রচুর বিভ্রান্তিকর ও অতিরঞ্জিত তথ্য প্রচারিত হয়। প্রায়শই দাবি করা হয় যে নির্দিষ্ট ফল ক্যানসার বা ডায়াবেটিস সম্পূর্ণ নিরাময় করতে পারে, কিংবা রাতারাতি বিষাক্ত বর্জ্য ডিটক্স করে দেয়। চিকিৎসাবিজ্ঞান ও পুষ্টিবিজ্ঞানের দৃষ্টিকোণ থেকে এই ধরনের দাবি কেবল অবৈজ্ঞানিকই নয়, রোগীদের জন্য ঝুঁকিপূর্ণও বটে।
+        </p>
+        <p>
+          একই সাথে, আমাদের নতুন প্রজন্মের কাছে বাংলার অনেক ঐতিহ্যবাহী দেশীয় ফল (যেমন চালতা, কদবেল, গাব, ডেউয়া, গোলাপজাম) বিস্মৃত হয়ে যাচ্ছে। অন্যদিকে ড্রাগন ফল, অ্যাভোকাডো ও রামবুটানের মতো আধুনিক কৃষিজ ফল সারাদেশে ছড়িয়ে পড়ছে।
+        </p>
+        <p>
+          এই প্রেক্ষাপটেই 'ফলবৃত্ত'-এর জন্ম। আমরা চেয়েছি এমন একটি ডিজিটাল পরিসর তৈরি করতে যেখানে প্রতিটি ফলের:
+        </p>
+        <ul class="feature-checklist">
+          <li>সঠিক বোটানিক্যাল বা বৈজ্ঞানিক পরিচয় থাকবে।</li>
+          <li>প্রতি ১০০ গ্রাম ভক্ষণযোগ্য অংশের আন্তর্জাতিক খাদ্যমান ডেটাবেসভিত্তিক সুনির্দিষ্ট পুষ্টিপরিসংখ্যান থাকবে।</li>
+          <li>ফল পাকার প্রকৃত মৌসুম ও বাজার প্রাপ্যতা স্পষ্টভাবে চিহ্নিত থাকবে।</li>
+          <li>মেডিকেল সতর্কতা, ওষুধের মিথস্ক্রিয়া এবং অতিরিক্ত গ্রহণের প্রভাব কোনো রাখঢাক না করে সরাসরি উল্লেখ থাকবে।</li>
+        </ul>
+      </section>
+
+      <section class="editorial-section">
+        <h2>আমাদের মূল সম্পাদকীয় নীতিমালা</h2>
+        <div class="policy-card-grid">
+          <div class="policy-card">
+            <span class="policy-icon" aria-hidden="true">🔬</span>
+            <h3>বৈজ্ঞানিক সততা</h3>
+            <p>
+              আমরা কোনো কাল্পনিক স্বাস্থ্য দাবি বা অলৌকিক নিরাময়ের প্রচার করি না। প্রতিটি দাবির পেছনে স্বীকৃত পুষ্টিবিজ্ঞান অথবা ক্লিনিক্যাল গবেষণার সুস্পষ্ট রেফারেন্স দেওয়া হয়।
+            </p>
+          </div>
+          <div class="policy-card">
+            <span class="policy-icon" aria-hidden="true">🇧🇩</span>
+            <h3>বাংলাদেশের বাস্তব প্রেক্ষাপট</h3>
+            <p>
+              আমদানি বনাম স্থানীয় উৎপাদনের পার্থক্য, বাংলার ষড়ঋতুর ফসল চক্র এবং দেশীয় রান্নার সংস্কৃতি ও খাদ্যরীতি বিবেচনায় রেখে প্রতিটি নিবন্ধ রচিত হয়েছে।
+            </p>
+          </div>
+          <div class="policy-card">
+            <span class="policy-icon" aria-hidden="true">⚠️</span>
+            <h3>ভারসাম্যপূর্ণ সতর্কতা</h3>
+            <p>
+              সব ফল সবার জন্য একরকম নিরাপদ নাও হতে পারে। ক্রনিক কিডনি ডিজিজ (যেমন কামরাঙার ক্ষেত্রে), ডায়াবেটিস কিংবা ল্যাটেক্স অ্যালার্জির মতো গুরুত্বপূর্ণ ঝুঁকির বিষয়ে আমরা আপসহীনভাবে স্পষ্ট বার্তা দিই।
+            </p>
+          </div>
+          <div class="policy-card">
+            <span class="policy-icon" aria-hidden="true">🎨</span>
+            <h3>শান্ত ও মার্জিত ভিজ্যুয়াল অভিজ্ঞতা</h3>
+            <p>
+              প্রাকৃতিক ফলের আসল সৌন্দর্য ফুটিয়ে তুলতে আমরা অপ্রয়োজনীয় চটকদার গ্রাফিক্স বা অ্যানিমেশন পরিহার করে সম্পাদকীয় ও পরিষ্কার নকশাকে প্রাধান্য দিয়েছি।
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <div class="cta-banner">
+        <h3>ফলের তথ্যভাণ্ডার ঘুরে দেখুন</h3>
+        <p>৫০টি পরিচিত ও কম পরিচিত ফলের পুষ্টিগুণ, মৌসুম ও খাওয়ার সঠিক উপায় জানতে আমাদের ডিরেক্টরি পরিদর্শন করুন।</p>
+        <a href={`${baseUrl}/#directory`} class="btn btn-primary">সকল ফল ডিরেক্টরি</a>
+      </div>
+    </article>
+  </div>
+</BaseLayout>
+
+<style>
+  .article-container {
+    padding-top: 2rem;
+    padding-bottom: 5rem;
+    max-width: 860px;
+  }
+
+  .breadcrumbs {
+    margin-bottom: 2rem;
+  }
+
+  .breadcrumb-list {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+  }
+
+  .breadcrumb-list a {
+    color: var(--color-primary-green);
+    font-weight: 600;
+  }
+
+  .breadcrumb-separator {
+    color: #9EAF9B;
+  }
+
+  .breadcrumb-current {
+    font-weight: 700;
+    color: var(--color-primary-text);
+  }
+
+  .article-header {
+    margin-bottom: 2.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .article-eyebrow {
+    display: inline-block;
+    padding: 0.25rem 0.65rem;
+    background-color: var(--color-soft-green);
+    color: var(--color-primary-green);
+    border-radius: var(--radius-full);
+    font-size: 0.8125rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+  }
+
+  .article-title {
+    font-size: 2.25rem;
+    font-weight: 800;
+    color: var(--color-primary-green);
+    line-height: 1.25;
+    margin-bottom: 1rem;
+  }
+
+  .article-lead {
+    font-size: 1.15rem;
+    line-height: 1.7;
+    color: var(--color-primary-text);
+    font-weight: 500;
+  }
+
+  .editorial-section {
+    margin-bottom: 3rem;
+  }
+
+  .editorial-section h2 {
+    font-size: 1.5rem;
+    color: var(--color-primary-green);
+    margin-bottom: 1rem;
+  }
+
+  .editorial-section p {
+    font-size: 1.0625rem;
+    line-height: 1.75;
+    margin-bottom: 1rem;
+  }
+
+  .feature-checklist {
+    list-style: none;
+    padding-left: 0;
+    margin: 1.5rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .feature-checklist li {
+    font-size: 1rem;
+    line-height: 1.6;
+    padding-left: 1.75rem;
+    position: relative;
+  }
+
+  .feature-checklist li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: var(--color-primary-green);
+    font-weight: 800;
+  }
+
+  .policy-card-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+    margin-top: 1.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .policy-card-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .policy-card {
+    background-color: #FFFFFF;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+  }
+
+  .policy-icon {
+    font-size: 1.75rem;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .policy-card h3 {
+    font-size: 1.125rem;
+    color: var(--color-primary-green);
+    margin-bottom: 0.5rem;
+  }
+
+  .policy-card p {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--color-primary-text);
+    margin-bottom: 0;
+  }
+
+  .cta-banner {
+    background-color: var(--color-soft-green);
+    border: 1px solid #CADEC4;
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    text-align: center;
+    margin-top: 3rem;
+  }
+
+  .cta-banner h3 {
+    font-size: 1.35rem;
+    color: var(--color-primary-green);
+    margin-bottom: 0.5rem;
+  }
+
+  .cta-banner p {
+    font-size: 1rem;
+    color: var(--color-primary-text);
+    margin-bottom: 1.25rem;
+  }
+</style>
+

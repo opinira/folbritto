@@ -1,0 +1,841 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import FruitCard from '../components/FruitCard.astro';
+import { fruits, allSeasons, allAvailabilities } from '../data/fruits';
+
+const title = 'ফল চিনুন, জেনে খান। বাংলাদেশের ফলের তথ্যভান্ডার';
+const description = 'পরিচিত ও কম পরিচিত ফলের পুষ্টিগুণ, মৌসুম, খাওয়ার উপায় ও প্রয়োজনীয় সতর্কতা—সব এক জায়গায়। ৫০টি ফলের নির্ভরযোগ্য বাংলা গাইড।';
+
+// Filter a representative sample of uploaded fruit images for the hero square tile collage
+const heroFeaturedFruits = fruits.filter(f => f.hasCustomPhoto).slice(0, 8);
+---
+
+<BaseLayout title={title} description={description} canonicalPath="/">
+  <!-- ============================================================
+       COMPACT HERO SECTION
+       ============================================================ -->
+  <section class="hero-section">
+    <div class="container hero-container">
+      <div class="hero-text-content">
+        <span class="hero-eyebrow">বাংলাদেশের ফলের বাংলা তথ্যভান্ডার</span>
+        <h1 class="hero-headline">ফল চিনুন, জেনে খান।</h1>
+        <p class="hero-supporting-text">
+          পরিচিত ও কম পরিচিত ফলের পুষ্টিগুণ, মৌসুম, খাওয়ার উপায় ও প্রয়োজনীয় সতর্কতা—সব এক জায়গায়।
+        </p>
+        <div class="hero-actions">
+          <a href="#directory" class="btn btn-primary btn-hero-cta">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            ফল খুঁজুন
+          </a>
+          <a href="#seasons" class="btn btn-secondary">
+            মৌসুমি ফল পরিক্রমা
+          </a>
+        </div>
+      </div>
+
+      <!-- Attractive 8-tile square composition of real fruit images -->
+      <div class="hero-tiles-wrap" aria-label="ফলের আলোকচিত্র কোলাজ">
+        <div class="hero-tiles-grid">
+          {heroFeaturedFruits.map((f, idx) => (
+            <a href={`#fruit-${f.slug}`} class={`hero-tile tile-${idx + 1}`} title={`${f.nameBn} (${f.nameEn})`}>
+              <img
+                src={f.image}
+                alt={f.nameBn}
+                width="160"
+                height="160"
+                loading={idx < 4 ? "eager" : "lazy"}
+                decoding="async"
+                class="hero-tile-img"
+              />
+              <span class="hero-tile-label">{f.nameBn}</span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       DIRECTORY SECTION (SEARCH & FILTERS)
+       ============================================================ -->
+  <section id="directory" class="directory-section">
+    <div class="container">
+      <!-- Section Header -->
+      <div class="section-header">
+        <div class="section-title-wrap">
+          <h2 class="section-title">সকল ফলের বাংলা ডিরেক্টরি</h2>
+          <p class="section-subtitle">
+            বাংলা বা ইংরেজিতে ফলের নাম দিয়ে খুঁজুন অথবা মৌসুম ও প্রাপ্যতার ভিত্তিতে ফিল্টার করুন।
+          </p>
+        </div>
+      </div>
+
+      <!-- Search & Filter Control Panel -->
+      <div class="filter-panel" role="search" aria-label="ফল খোঁজা ও ফিল্টার করার প্যানেল">
+        <!-- Search Input -->
+        <div class="search-box-wrap">
+          <label for="fruit-search-input" class="search-label">
+            ফলের নাম অনুসন্ধান:
+          </label>
+          <div class="search-input-inner">
+            <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input
+              type="text"
+              id="fruit-search-input"
+              class="fruit-search-input"
+              placeholder="বাংলা বা ইংরেজিতে ফলের নাম লিখুন… (যেমন: আম, Mango, বরই, বেদানা)"
+              autocomplete="off"
+            />
+            <button id="clear-search-btn" class="clear-search-btn" type="button" aria-label="অনুসন্ধান মুছুন" style="display: none;">
+              ✕
+            </button>
+          </div>
+        </div>
+
+        <!-- Filter Groups -->
+        <div class="filters-row" id="seasons">
+          <!-- Season Filter -->
+          <div class="filter-group">
+            <span class="filter-group-title">মৌসুম অনুযায়ী:</span>
+            <div class="filter-chips" role="group" aria-label="মৌসুম ফিল্টার">
+              {allSeasons.map((season) => (
+                <button
+                  type="button"
+                  class={`filter-chip ${season === 'সব' ? 'is-active' : ''}`}
+                  data-filter-type="season"
+                  data-value={season}
+                >
+                  {season}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <!-- Availability Filter -->
+          <div class="filter-group">
+            <span class="filter-group-title">বাংলাদেশে প্রাপ্যতা:</span>
+            <div class="filter-chips" role="group" aria-label="প্রাপ্যতা ফিল্টার">
+              {allAvailabilities.map((avail) => (
+                <button
+                  type="button"
+                  class={`filter-chip ${avail === 'সব' ? 'is-active' : ''}`}
+                  data-filter-type="availability"
+                  data-value={avail}
+                >
+                  {avail}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <!-- Filter Bar Status & Reset -->
+        <div class="filter-status-bar">
+          <div class="result-count-wrap" aria-live="polite">
+            <span id="result-count" class="result-count">৫০</span> টি ফলের তথ্য প্রদর্শিত হচ্ছে
+          </div>
+
+          <div class="sort-and-reset">
+            <div class="sort-wrap">
+              <label for="sort-select" class="sort-label">সাজান:</label>
+              <select id="sort-select" class="sort-select">
+                <option value="default">ডিফল্ট ক্রম</option>
+                <option value="name-bn">বাংলা নাম (অ-হ)</option>
+                <option value="name-en">English Name (A-Z)</option>
+              </select>
+            </div>
+
+            <button id="reset-filters-btn" class="btn btn-secondary btn-sm reset-btn" type="button">
+              ফিল্টার মুছুন
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fruit Card Grid -->
+      <div id="fruits-grid" class="fruits-grid">
+        {fruits.map((fruit, idx) => (
+          <FruitCard fruit={fruit} lazyLoad={idx >= 8} />
+        ))}
+      </div>
+
+      <!-- Empty State -->
+      <div id="empty-state" class="empty-state" style="display: none;">
+        <div class="empty-icon" aria-hidden="true">🍃</div>
+        <h3 class="empty-title">কোনো ফল খুঁজে পাওয়া যায়নি</h3>
+        <p class="empty-desc">
+          আপনার অনুসন্ধানের সাথে মিলে এমন কোনো ফল এই তালিকায় নেই। দয়া করে সঠিক বানান বা ভিন্ন কোনো নাম চেষ্টা করুন।
+        </p>
+        <button id="empty-reset-btn" class="btn btn-primary" type="button">
+          সব ফিল্টার মুছে ফেলুন
+        </button>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  // Normalization helper for Bangla Unicode, aliases and English case
+  function normalizeText(text: string): string {
+    return text
+      .trim()
+      .toLowerCase()
+      .normalize('NFC')
+      .replace(/[\s\-_]+/g, ' ');
+  }
+
+  const searchInput = document.getElementById('fruit-search-input') as HTMLInputElement | null;
+  const clearSearchBtn = document.getElementById('clear-search-btn');
+  const seasonChips = document.querySelectorAll<HTMLButtonElement>('[data-filter-type="season"]');
+  const availChips = document.querySelectorAll<HTMLButtonElement>('[data-filter-type="availability"]');
+  const sortSelect = document.getElementById('sort-select') as HTMLSelectElement | null;
+  const resetBtn = document.getElementById('reset-filters-btn');
+  const emptyResetBtn = document.getElementById('empty-reset-btn');
+  const resultCount = document.getElementById('result-count');
+  const fruitsGrid = document.getElementById('fruits-grid');
+  const emptyState = document.getElementById('empty-state');
+  const allCards = Array.from(document.querySelectorAll<HTMLElement>('.fruit-card'));
+
+  // State
+  let currentSearch = '';
+  let selectedSeason = 'সব';
+  let selectedAvailability = 'সব';
+  let currentSort = 'default';
+
+  // Read URL query parameters on load
+  function readParamsFromUrl() {
+    const params = new URLSearchParams(window.location.search);
+    const q = params.get('q');
+    const season = params.get('season');
+    const avail = params.get('avail');
+    const sort = params.get('sort');
+
+    if (q && searchInput) {
+      searchInput.value = q;
+      currentSearch = q;
+      if (clearSearchBtn) clearSearchBtn.style.display = 'block';
+    }
+
+    if (season) {
+      selectedSeason = season;
+      seasonChips.forEach(chip => {
+        chip.classList.toggle('is-active', chip.dataset.value === season);
+      });
+    }
+
+    if (avail) {
+      selectedAvailability = avail;
+      availChips.forEach(chip => {
+        chip.classList.toggle('is-active', chip.dataset.value === avail);
+      });
+    }
+
+    if (sort && sortSelect) {
+      sortSelect.value = sort;
+      currentSort = sort;
+    }
+  }
+
+  // Update URL params
+  function updateUrlParams() {
+    const params = new URLSearchParams();
+    if (currentSearch) params.set('q', currentSearch);
+    if (selectedSeason !== 'সব') params.set('season', selectedSeason);
+    if (selectedAvailability !== 'সব') params.set('avail', selectedAvailability);
+    if (currentSort !== 'default') params.set('sort', currentSort);
+
+    const newUrl = params.toString()
+      ? `${window.location.pathname}?${params.toString()}`
+      : window.location.pathname;
+
+    window.history.replaceState({}, '', newUrl);
+  }
+
+  function toBengaliNumber(num: number): string {
+    const bnDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
+    return num.toString().split('').map(d => bnDigits[parseInt(d, 10)] || d).join('');
+  }
+
+  // Apply filters and sort
+  function applyFilters() {
+    const normalizedQuery = normalizeText(currentSearch);
+    let visibleCount = 0;
+
+    const cardsToSort = [...allCards];
+
+    // Sorting
+    if (currentSort === 'name-bn') {
+      cardsToSort.sort((a, b) => {
+        const nameA = a.dataset.nameBn || '';
+        const nameB = b.dataset.nameBn || '';
+        return nameA.localeCompare(nameB, 'bn');
+      });
+    } else if (currentSort === 'name-en') {
+      cardsToSort.sort((a, b) => {
+        const nameA = a.dataset.nameEn || '';
+        const nameB = b.dataset.nameEn || '';
+        return nameA.localeCompare(nameB, 'en');
+      });
+    }
+
+    // Reorder in DOM if sorted
+    if (fruitsGrid && currentSort !== 'default') {
+      cardsToSort.forEach(card => fruitsGrid.appendChild(card));
+    }
+
+    // Filtering
+    cardsToSort.forEach(card => {
+      const nameBn = normalizeText(card.dataset.nameBn || '');
+      const nameEn = normalizeText(card.dataset.nameEn || '');
+      const aliases = normalizeText(card.dataset.aliases || '');
+      const seasons = (card.dataset.seasons || '').split(',');
+      const availabilities = (card.dataset.availabilities || '').split(',');
+
+      // 1. Search Match
+      let matchesSearch = true;
+      if (normalizedQuery) {
+        matchesSearch = (
+          nameBn.includes(normalizedQuery) ||
+          nameEn.includes(normalizedQuery) ||
+          aliases.includes(normalizedQuery)
+        );
+      }
+
+      // 2. Season Match (AND with availability)
+      let matchesSeason = true;
+      if (selectedSeason !== 'সব') {
+        matchesSeason = seasons.includes(selectedSeason) || seasons.includes('সারা বছর');
+      }
+
+      // 3. Availability Match
+      let matchesAvailability = true;
+      if (selectedAvailability !== 'সব') {
+        matchesAvailability = availabilities.includes(selectedAvailability);
+      }
+
+      const isVisible = matchesSearch && matchesSeason && matchesAvailability;
+      card.style.display = isVisible ? '' : 'none';
+
+      if (isVisible) visibleCount++;
+    });
+
+    // Update Result count
+    if (resultCount) {
+      resultCount.textContent = toBengaliNumber(visibleCount);
+    }
+
+    // Toggle Empty state
+    if (emptyState && fruitsGrid) {
+      if (visibleCount === 0) {
+        emptyState.style.display = 'block';
+        fruitsGrid.style.display = 'none';
+      } else {
+        emptyState.style.display = 'none';
+        fruitsGrid.style.display = 'grid';
+      }
+    }
+
+    updateUrlParams();
+  }
+
+  // Reset all filters
+  function resetAll() {
+    currentSearch = '';
+    selectedSeason = 'সব';
+    selectedAvailability = 'সব';
+    currentSort = 'default';
+
+    if (searchInput) {
+      searchInput.value = '';
+      if (clearSearchBtn) clearSearchBtn.style.display = 'none';
+    }
+
+    if (sortSelect) sortSelect.value = 'default';
+
+    seasonChips.forEach(chip => chip.classList.toggle('is-active', chip.dataset.value === 'সব'));
+    availChips.forEach(chip => chip.classList.toggle('is-active', chip.dataset.value === 'সব'));
+
+    applyFilters();
+  }
+
+  // Event Listeners
+  searchInput?.addEventListener('input', (e) => {
+    currentSearch = (e.target as HTMLInputElement).value;
+    if (clearSearchBtn) {
+      clearSearchBtn.style.display = currentSearch ? 'block' : 'none';
+    }
+    applyFilters();
+  });
+
+  clearSearchBtn?.addEventListener('click', () => {
+    if (searchInput) {
+      searchInput.value = '';
+      currentSearch = '';
+      clearSearchBtn.style.display = 'none';
+      applyFilters();
+      searchInput.focus();
+    }
+  });
+
+  seasonChips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      seasonChips.forEach(c => c.classList.remove('is-active'));
+      chip.classList.add('is-active');
+      selectedSeason = chip.dataset.value || 'সব';
+      applyFilters();
+    });
+  });
+
+  availChips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      availChips.forEach(c => c.classList.remove('is-active'));
+      chip.classList.add('is-active');
+      selectedAvailability = chip.dataset.value || 'সব';
+      applyFilters();
+    });
+  });
+
+  sortSelect?.addEventListener('change', (e) => {
+    currentSort = (e.target as HTMLSelectElement).value;
+    applyFilters();
+  });
+
+  resetBtn?.addEventListener('click', resetAll);
+  emptyResetBtn?.addEventListener('click', resetAll);
+
+  // Initialize
+  readParamsFromUrl();
+  applyFilters();
+
+  // Handle browser back/forward buttons
+  window.addEventListener('popstate', () => {
+    readParamsFromUrl();
+    applyFilters();
+  });
+</script>
+
+<style>
+  /* ============================================================
+     HERO STYLING
+     ============================================================ */
+  .hero-section {
+    padding-top: 2.5rem;
+    padding-bottom: 3rem;
+    background: linear-gradient(180deg, #F9F7EC 0%, #FFFDF5 100%);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .hero-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    align-items: center;
+  }
+
+  @media (min-width: 900px) {
+    .hero-container {
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 3.5rem;
+    }
+  }
+
+  .hero-text-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .hero-eyebrow {
+    display: inline-block;
+    padding: 0.35rem 0.85rem;
+    background-color: var(--color-soft-green);
+    color: var(--color-primary-green);
+    border: 1px solid #CADEC4;
+    border-radius: var(--radius-full);
+    font-size: 0.875rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    letter-spacing: -0.01em;
+  }
+
+  .hero-headline {
+    font-size: 2.25rem;
+    font-weight: 800;
+    color: var(--color-primary-green);
+    line-height: 1.2;
+    margin-bottom: 1rem;
+    letter-spacing: -0.02em;
+  }
+
+  @media (min-width: 640px) {
+    .hero-headline {
+      font-size: 3rem;
+    }
+  }
+
+  .hero-supporting-text {
+    font-size: 1.125rem;
+    color: var(--color-primary-text);
+    line-height: 1.6;
+    margin-bottom: 1.75rem;
+    max-width: 580px;
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+  }
+
+  .btn-hero-cta {
+    box-shadow: 0 4px 14px rgba(24, 92, 58, 0.25);
+  }
+
+  /* 8-Tile Composition */
+  .hero-tiles-wrap {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .hero-tiles-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.65rem;
+    width: 100%;
+    max-width: 440px;
+  }
+
+  .hero-tile {
+    aspect-ratio: 1 / 1;
+    background-color: #FFFFFF;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    position: relative;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+  }
+
+  .hero-tile:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: var(--shadow-md);
+    border-color: var(--color-primary-green);
+  }
+
+  .hero-tile-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background-color: #FFFDF5;
+    padding: 0.25rem;
+  }
+
+  .hero-tile-label {
+    position: absolute;
+    bottom: 0.25rem;
+    left: 0.25rem;
+    right: 0.25rem;
+    background-color: rgba(32, 53, 42, 0.8);
+    color: #FFFFFF;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    text-align: center;
+    padding: 0.1rem 0.25rem;
+    border-radius: var(--radius-sm);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* ============================================================
+     DIRECTORY SECTION STYLING
+     ============================================================ */
+  .directory-section {
+    padding-top: 3.5rem;
+    padding-bottom: 5rem;
+  }
+
+  .section-header {
+    margin-bottom: 2rem;
+  }
+
+  .section-title {
+    font-size: 1.875rem;
+    font-weight: 800;
+    color: var(--color-primary-green);
+    margin-bottom: 0.5rem;
+  }
+
+  .section-subtitle {
+    font-size: 1rem;
+    color: var(--color-text-muted);
+    max-width: 700px;
+  }
+
+  /* Filter Panel */
+  .filter-panel {
+    background-color: #FFFFFF;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    padding: 1.5rem;
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 2.5rem;
+  }
+
+  .search-box-wrap {
+    margin-bottom: 1.5rem;
+  }
+
+  .search-label {
+    display: block;
+    font-weight: 700;
+    font-size: 0.9375rem;
+    color: var(--color-primary-text);
+    margin-bottom: 0.5rem;
+  }
+
+  .search-input-inner {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .search-icon {
+    position: absolute;
+    left: 1.15rem;
+    color: var(--color-primary-green);
+    pointer-events: none;
+  }
+
+  .fruit-search-input {
+    width: 100%;
+    padding: 0.95rem 2.75rem 0.95rem 3.25rem;
+    font-size: 1.0625rem;
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background-color: var(--color-bg);
+    color: var(--color-primary-text);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .fruit-search-input:focus {
+    outline: none;
+    border-color: var(--color-primary-green);
+    box-shadow: 0 0 0 4px rgba(24, 92, 58, 0.12);
+  }
+
+  .clear-search-btn {
+    position: absolute;
+    right: 0.75rem;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: #E8E5D8;
+    color: var(--color-primary-text);
+    font-size: 0.875rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Filters row */
+  .filters-row {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  @media (min-width: 820px) {
+    .filters-row {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+  }
+
+  .filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .filter-group-title {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--color-primary-green);
+  }
+
+  .filter-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .filter-chip {
+    padding: 0.35rem 0.75rem;
+    border-radius: var(--radius-full);
+    font-size: 0.84375rem;
+    font-weight: 600;
+    background-color: var(--color-bg);
+    border: 1px solid var(--color-border);
+    color: var(--color-primary-text);
+    transition: all 0.15s ease;
+    min-height: 36px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .filter-chip:hover {
+    border-color: var(--color-primary-green);
+    background-color: var(--color-soft-green);
+  }
+
+  .filter-chip.is-active {
+    background-color: var(--color-primary-green);
+    color: #FFFFFF;
+    border-color: var(--color-primary-green);
+  }
+
+  /* Status bar */
+  .filter-status-bar {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding-top: 1.25rem;
+    align-items: flex-start;
+  }
+
+  @media (min-width: 640px) {
+    .filter-status-bar {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+
+  .result-count-wrap {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--color-text-muted);
+  }
+
+  .result-count {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--color-primary-green);
+  }
+
+  .sort-and-reset {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .sort-wrap {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .sort-label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-text-muted);
+  }
+
+  .sort-select {
+    padding: 0.4rem 0.75rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--color-border);
+    background-color: var(--color-bg);
+    color: var(--color-primary-text);
+    font-size: 0.875rem;
+    cursor: pointer;
+  }
+
+  .reset-btn {
+    min-height: 36px;
+    padding: 0.35rem 0.85rem;
+    font-size: 0.84375rem;
+  }
+
+  /* ============================================================
+     RESPONSIVE GRID SYSTEM
+     Mobile-first:
+     - Narrow phones: 1 column
+     - Wider phones (> 480px): 2 columns
+     - Tablets (> 768px): 3 columns
+     - Desktop (> 1024px): 4 columns
+     ============================================================ */
+  .fruits-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  @media (min-width: 480px) {
+    .fruits-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.25rem;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .fruits-grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .fruits-grid {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.75rem;
+    }
+  }
+
+  /* Empty State */
+  .empty-state {
+    text-align: center;
+    padding: 4rem 1.5rem;
+    background-color: #FFFFFF;
+    border: 1px dashed var(--color-border);
+    border-radius: var(--radius-lg);
+  }
+
+  .empty-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+
+  .empty-title {
+    font-size: 1.35rem;
+    color: var(--color-primary-green);
+    margin-bottom: 0.5rem;
+  }
+
+  .empty-desc {
+    color: var(--color-text-muted);
+    font-size: 0.9375rem;
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 1.5rem;
+  }
+</style>
+

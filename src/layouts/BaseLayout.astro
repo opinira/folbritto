@@ -1,0 +1,119 @@
+---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  canonicalPath?: string;
+  structuredData?: Record<string, any> | Record<string, any>[];
+}
+
+const {
+  title,
+  description,
+  image = '/images/fruits/jackfruit.webp',
+  canonicalPath = '',
+  structuredData,
+} = Astro.props;
+
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
+const siteUrl = 'https://opinira.github.io';
+const fullCanonicalUrl = `${siteUrl}${baseUrl}${canonicalPath.startsWith('/') ? canonicalPath : `/${canonicalPath}`}`;
+const ogImageUrl = image.startsWith('http') ? image : `${siteUrl}${baseUrl}${image.startsWith('/') ? image : `/${image}`}`;
+
+const defaultWebSiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  'name': 'ফলবৃত্ত (Folbritto)',
+  'url': `${siteUrl}${baseUrl}/`,
+  'inLanguage': 'bn',
+  'description': 'বাংলাদেশের ফলের নির্ভরযোগ্য বাংলা ডিজিটাল তথ্যভান্ডার',
+  'publisher': {
+    '@type': 'Organization',
+    'name': 'ফলবৃত্ত',
+    'url': `${siteUrl}${baseUrl}/`,
+    'logo': `${siteUrl}${baseUrl}/images/logo.svg`
+  }
+};
+
+const schemasToRender = structuredData
+  ? Array.isArray(structuredData)
+    ? [defaultWebSiteSchema, ...structuredData]
+    : [defaultWebSiteSchema, structuredData]
+  : [defaultWebSiteSchema];
+---
+
+<!DOCTYPE html>
+<html lang="bn">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title} | ফলবৃত্ত (Folbritto)</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={fullCanonicalUrl} />
+
+    <!-- Favicon & Brand -->
+    <link rel="icon" type="image/svg+xml" href={`${baseUrl}/favicon.svg`} />
+    <link rel="apple-touch-icon" href={`${baseUrl}/favicon.svg`} />
+    <meta name="theme-color" content="#185C3A" />
+
+    <!-- Open Graph Metadata -->
+    <meta property="og:site_name" content="ফলবৃত্ত (Folbritto)" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={`${title} | ফলবৃত্ত`} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={fullCanonicalUrl} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:locale" content="bn_BD" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={`${title} | ফলবৃত্ত`} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+
+    <!-- Font preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- JSON-LD Structured Data -->
+    {schemasToRender.map((schema) => (
+      <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+    ))}
+  </head>
+  <body>
+    <a href="#main-content" class="skip-to-content">সরাসরি মূল বিষয়ে যান</a>
+    
+    <Header />
+
+    <main id="main-content">
+      <slot />
+    </main>
+
+    <Footer />
+  </body>
+</html>
+
+<style>
+  .skip-to-content {
+    position: absolute;
+    top: -100px;
+    left: 1rem;
+    z-index: 999;
+    background-color: var(--color-primary-green);
+    color: var(--color-white);
+    padding: 0.75rem 1.25rem;
+    border-radius: var(--radius-sm);
+    font-weight: 700;
+    transition: top 0.2s ease;
+  }
+
+  .skip-to-content:focus {
+    top: 1rem;
+    outline: 3px solid var(--color-accent-yellow);
+  }
+</style>
+
